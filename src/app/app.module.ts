@@ -20,7 +20,7 @@ import { ContactComponent } from './contact/contact.component';
 import 'hammerjs';
 
 import { DishService } from './services/dish.service';
-import { from } from 'rxjs';
+import { PromotionService } from './services/promotion.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,9 @@ import { from } from 'rxjs';
     MatCardModule,
     AppRoutingModule
   ],
-  providers: [DishService],
+  providers: [
+    DishService,
+    PromotionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
