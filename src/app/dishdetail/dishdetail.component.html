@@ -1,5 +1,5 @@
 <div class="container"
-fxLayout="row"
+fxLayout="row wrap"
 fxLayout.sm="column"
 fxLayout.xs="column"
 fxLayoutAlign.gt-md="space-around center"
@@ -10,7 +10,12 @@ fxLayoutGap.xs="0">
     <mat-card>
       <mat-card-header>
         <mat-card-title>
-          <h3>{{dish.name | uppercase}}</h3>
+          <div fxFlex="100">
+            <div>
+              <h3>{{dish.name | uppercase}}</h3>
+              <hr>
+            </div>
+          </div>
         </mat-card-title>
       </mat-card-header>
       <img mat-card-image src={{dish.image}} alt={{dish.name}}>
