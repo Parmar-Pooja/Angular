@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
 import { Promotion } from '../shared/promotion';
@@ -12,21 +12,21 @@ import { LeaderService } from '../services/leader.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  
-  leader: Leader;
+
   dish: Dish;
   promotion: Promotion;
+  leader: Leader;
 
-  constructor(private dishService: DishService,
-    private promotionService: PromotionService,
-    private leaderService: LeaderService) { }
+  constructor(private dishservice: DishService,
+    private leaderservice: LeaderService,
+    private promotionservice: PromotionService,
+    @Inject('BaseURL') public BaseURL) { }
 
-  ngOnInit(): void {
-    this.dishService.getFeaturedDish()
-      .subscribe(dish => this.dish = dish);
-    this.promotionService.getFeaturedPromotion()
-      .subscribe(promotion => this.promotion = promotion);
-    this.leaderService.getFeaturedLeader()
-      .subscribe(leader => this.leader = leader);
+  ngOnInit() {
+    this.dishservice.getFeaturedDish().subscribe(dish => this.dish = dish);
+    this.promotionservice.getFeaturedPromotion().subscribe(promotion => this.promotion = promotion);
+    this.leaderservice.getFeaturedLeader().subscribe(leader => this.leader = leader);
+    
   }
+
 }

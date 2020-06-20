@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { DishService } from '../services/dish.service';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
+import { DishService } from '../services/dish.service';
 
 @Component({
   selector: 'app-menu',
@@ -8,20 +8,14 @@ import { Dish } from '../shared/dish';
   styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent implements OnInit {
-
+	
   dishes: Dish[];
 
-  selectedDish: Dish;
+  constructor(private dishService: DishService,
+    @Inject('BaseURL') public BaseURL) { }
 
-  constructor(private dishService: DishService) { }
-
-  ngOnInit(): void {
-    this.dishService.getDishes()
-    .subscribe((dishes) => this.dishes = dishes);
-  }
-
-  onSelect(dish: Dish) {
-    this.selectedDish = dish;
+  ngOnInit() {
+   this.dishService.getDishes().subscribe(dishes => this.dishes = dishes);
   }
 
 }
