@@ -8,7 +8,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { baseURL } from '../shared/baseurl';
 import { ProcessHTTPMsgService } from '../services/process-httpmsg.service'
 
-
 @Injectable({
   providedIn: 'root'
 })

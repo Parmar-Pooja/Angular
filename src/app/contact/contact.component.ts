@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../animations/app.animation'
+import { flyInOut, expand } from '../animations/app.animation';
+import {Dish} from '../shared/dish';
+import {DishService} from '../services/dish.service';
+import {FeedbackService} from '../services/feedback.service';
 
 @Component({
   selector: 'app-contact',
@@ -12,15 +15,22 @@ import { flyInOut } from '../animations/app.animation'
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackcopy: Feedback;
+  errMess: string;
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
+
+  isLoading: boolean;
+  isShowingResponse: boolean; 
+
 
   formErrors = {
     'firstname': '',
@@ -51,8 +61,11 @@ export class ContactComponent implements OnInit {
     
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private feedbackService: FeedbackService) {
     this.createForm();
+    this.isLoading = false;
+    this.isShowingResponse = false;
    }
 
   ngOnInit(): void {
@@ -94,17 +107,27 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading= true;
     this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
-    this.feedbackForm.reset({
-      firstname: '',
-      lastname: '',
-      telnum: 0,
-      email: '',
-      agree: false,
-      contacttype: '',
-      message: ''
+    this.feedbackService.submitFeedback(this.feedback)
+    .subscribe(feedback => {
+      this.feedback = feedback;
+      console.log(this.feedback);
+    },
+    errMess => {
+      this.feedback=null;
+      this.feedbackcopy=null;
+      this.errMess = errMess;
+    },
+    () => {
+      this.isShowingResponse = true;
+      setTimeout(() => {
+          this.isShowingResponse = false;
+          this.isLoading = false;
+        } , 5000
+      );
     });
+    
     this.feedbackFormDirective.resetForm();
   }
 
